@@ -66,11 +66,20 @@ $(document).ready(function() {
 	$("#submitBtn").on("click", function(e) {
 		e.preventDefault();
 
+		var $type = $("#type");
+		var typeValue = $type[0].options[($type[0].selectedIndex)].innerHTML;
+		var $description = $("#description");
+		var descriptionValue = $description[0].value.trim();
+		var lat = locationMarker.getLatLng().lat;
+		var lng = locationMarker.getLatLng().lng;
+
 		signin(function() {
 			//var url = `http://159.203.247.240:3000/create?description=${}&latitude=${}&longitude${}`
 			//var url = "http://159.203.247.240:3000/reports.json"; //http://10.113.219.153:3000/
 			// var url = 'http://localhost:3000/create?reporter='+profile.user_id+'&description=test&latitude=test&longitude=test&type=Graffiti';
-			var url = 'http://159.203.247.240:3000/create?reporter='+profile.user_id+'&description=test&latitude=test&longitude=test&type=Graffiti';
+			//var url = 'http://159.203.247.240:3000/create?reporter='+profile.user_id+'&description=test&latitude=test&longitude=test&type=Graffiti';
+			var url = `http://159.203.247.240:3000/create?reporter=${profile.user_id}&description=${descriptionValue}&latitude=${lat}&longitude=${lng}&type=${typeValue}`;
+			console.log(url);
 
 			$.ajax({
 				url: url,
