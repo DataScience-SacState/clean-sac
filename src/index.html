@@ -13,12 +13,13 @@
 	<div id="app">
 		<div class="app__navbar">
 			<span id="togglebtn"><i class="fa fa-2x fa-bars"></i></span>
-			<span class="title">Clean Sac</span>
+			<span class="title">Service Request</span>
 		</div>
 		<div id="dropdown">
 			<ul>
-				<li><a href="index.html">Report Trash</a></li>
-				<li><a href="heatmap.html">Trash Map</a></li>
+				<li><a href="index.html">Request Service</a></li>
+				<li><a href="heatmap.html">Heat Map</a></li>
+				<li><a href="actionitems.html">Recommended Service Locations</a></li>
 				<li><a href="#">About</a></li>
 				<li><a href="#">Sign in</a></li>
 			</ul>
@@ -30,25 +31,41 @@
 
 		<div id="slideupBtn">
 			<div>
-				<i class="fa fa-trash"></i>
+				<i class="fa fa-pencil-square-o"></i>
 			</div>
 		</div>
 		<div id="trashReport">
 
 			<form class="trashForm">
 
-				<div class="title">Report Trash</div>
+				<div class="title"></div>
 				<div class="location">
 					<div class="form_titles">Pin Location</div>
 					<div class="form_latlong"></div>
 
 				</div>
 
+				<div class="type">
+					<div class="form_titles">Type of Report</div>
+
+					<select id="type">
+						<option>Graffiti</option>
+						<option>Trees</option>
+						<option>Illegal Dumping</option>
+						<option>Pavement</option>
+						<option>Traffic Sign Complaints</option>
+						<option>Sweeper Request</option>
+						<option>Stray Animals</option>
+						<option>Abandoned Vehicles</option>
+					</select>
+
+				</div>
+
 				<div class="description">
 					<label class="form_titles" for="description">Description</label>
-					<textarea rows="4" cols="40" class="form_inputs" id="description" type="text">
+					<textarea rows="4" cols="40" maxlength="255" class="form_inputs" id="description" type="text" required>
 
-					</textarea>				
+					</textarea>
 					
 				</div>
 				<div>
@@ -59,7 +76,16 @@
 			</form>
 
 		</div>
+
+		<div id="flexSuccessModal"> 
+			<div id="successModal">
+				<h1>Success</h1>
+				<p>Your Report ID</p>
+				<button id="modalButton" type="button">Exit</button>
+			</div>
+		</div>
 	</div>
+	<script src="https://cdn.auth0.com/js/lock-9.0.min.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>

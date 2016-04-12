@@ -29,9 +29,9 @@ $(document).ready(function() {
     state.filterStatus = true;
 
     //state = tmpState
-    logCurrentState();
     renderFilters();
     updateHeatmap();
+    logCurrentState();
 
   });
   //createFilterEventListeners(filters);
@@ -84,10 +84,16 @@ function initMap() {
 }
 
 function fetchListandCreateHeatMap(map) {
-  //var url = "http://159.203.247.240:8080/list.json"
-  var url = "data.json"
 
-  //{    mode: 'no-cors'  })
+  // Display heat map is "loading..."
+  if (!state.loaded) {
+    $(".title").html('Loading <i class="fa fa-refresh fa-spin"></i>')
+  }
+
+  var url = "http://159.203.247.240:3000/reports.json"
+  console.log(url)
+  //var url = "data.json"
+
   console.log("STARTING FETCH")
   fetch(url)
     .then(function(res) {
@@ -96,6 +102,7 @@ function fetchListandCreateHeatMap(map) {
     .then(function(json) {
       console.log("creating heatmap")
       reportsJson = json;
+      console.log(json)
 
       var googlePoints = processDataToGoogleArray(reportsJson);
       heatmap = new google.maps.visualization.HeatmapLayer({
@@ -104,6 +111,8 @@ function fetchListandCreateHeatMap(map) {
         radius: 20
       });
       state.loaded = true;
+      $(".title").text("Heat Map")
+
       console.log("heatmap loaded to map")
       
     })
@@ -121,22 +130,32 @@ function processDataToGoogleArray(data) {
     state.filterStatus = false;
 
     var processedData = data.map(function(point) {
-      return new google.maps.LatLng(point.LAT, point.LON);
+      return new google.maps.LatLng(point.latitude, point.longitude);
     });
 
   }else{
+
     state.filterStatus = true;
 
     var processedData = data.filter(function(data) {
-      return _.includes(toggledFilters, data.TYPE)
+      return _.includes(toggledFilters, data.type)
     })
     .map(function(point) {
-      return new google.maps.LatLng(point.LAT, point.LON);
+      return new google.maps.LatLng(point.latitude, point.longitude);
     });
 
   }
 
   return googleMVCArray = new google.maps.MVCArray(processedData);
+}
+
+function getToggledFilters() {
+  return state.filters.filter(function(filter) {
+    return filter.checked
+  })
+  .map(function(filter){
+    return filter.name;
+  });
 }
 
 function createFilterListItems() {
@@ -153,15 +172,6 @@ function renderFilters() {
   $("#filtersList").html(createFilterListItems());  
 }
 
-function getToggledFilters() {
-  return state.filters.filter(function(filter) {
-    return filter.checked
-  })
-  .map(function(filter){
-    return filter.name;
-  });
-}
-
 function updateHeatmap() {
   googleMVCArray.clear();
   //reportsJson
@@ -174,31 +184,33 @@ function updateHeatmap() {
     state.filterStatus = false;
 
     reportsJson.map(function(point) {
-      googleMVCArray.push( new google.maps.LatLng(point.LAT, point.LON) );
+      googleMVCArray.push( new google.maps.LatLng(point.latitude, point.longitude) );
     });
 
   }else{
+
     state.filterStatus = true;
 
     reportsJson.filter(function(data) {
-      return _.includes(toggledFilters, data.TYPE)
+      return _.includes(toggledFilters, data.type)
     })
     .map(function(point) {
-      googleMVCArray.push( new google.maps.LatLng(point.LAT, point.LON) );
+      googleMVCArray.push( new google.maps.LatLng(point.latitude, point.longitude) );
     });
 
   }
-
-  //wont need dsfasdf
-  // heatmap = new google.maps.visualization.HeatmapLayer({
-  //   data: googlePoints,
-  //   setMap: map,
-  //   radius: 20
-  // });
   console.log("heatmap updated")
 }
 
 function logCurrentState() {
   console.log("--- Current State: ---")
   console.log(state);
+}
+
+function heatmapLoaded() {
+  if (state.loaded) {
+    return true;
+  } else {
+    return false;
+  }
 }

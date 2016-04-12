@@ -10,7 +10,8 @@ import pandas as pd
 from sklearn.cluster import DBSCAN
 from scipy.spatial import distance
 
-DATA_URL = "http://10.113.219.153:3000/reports.json"
+#DATA_URL = "http://10.113.219.153:3000/reports.json"
+DATA_URL = "http://159.203.247.240:3000/reports.json"
 
 def parseGPX():
     # read in the file
@@ -38,7 +39,7 @@ def get_cord_matt():
 
 def cluster_coords(response):
     #create dataframe
-    df = pd.DataFrame(columns=['lat','long','cleaned','type'])
+    df = pd.DataFrame(columns=['latitude','longitude','cleaned','type'])
     coordsC = [(0.0,0.0)]
     coordsP = [(0.0,0.0)]
     for a in response:
@@ -51,7 +52,7 @@ def cluster_coords(response):
         else:
             cleaned = True
             coordsC.append([lat,longi])
-        df = df.append({'lat':lat,'long':longi,'cleaned':cleaned, 'type': type}, ignore_index=True)
+        df = df.append({'latitude':lat,'longitude':longi,'cleaned':cleaned, 'type': type}, ignore_index=True)
         
     #lines = [line.rstrip('\n') for line in open('fix_random.txt')]
     #lines = lines[:-1]
@@ -68,20 +69,20 @@ def cluster_coords(response):
     #labels = db.labels_
     #num_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     #clusters = pd.Series([df[labels == i] for i in xrange(num_clusters)])
-    groupByType = df['lat','long'].groupby(df['type'])
-    centroids = pd.DataFrame(columns=['lat','long','type','label'])
+    groupByType = df[['latitude','longitude']].groupby(df['type'])
+    centroids = pd.DataFrame(columns=['latitude','longitude','type','label'])
     for group in groupByType:
-        db = DBSCAN(eps=.1,min_samples=10).fit(group)
+        db = DBSCAN(eps=.1,min_samples=10).fit(group[1])
         core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
         core_samples_mask[db.core_sample_indices_] = True
         labels = db.labels_
         uniqueLabels = set(labels)
         for label in uniqueLabels:
             if(label != -1):
-                class_member_mask = (labels == k)
-                points = X[class_member_mask & core_samples_mask]
+                class_member_mask = (labels == label)
+                points = [class_member_mask & core_samples_mask]
                 center = points.median()
-                centroids.append({'lat':center[0],'long':center[1],'type':group,'label':label})
+                centroids.append({'latitude':center[0],'longitude':center[1],'type':group,'label':label})
 
 
     print(centroids)
