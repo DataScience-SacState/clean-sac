@@ -19,6 +19,7 @@
 			<ul>
 				<li><a href="index.html">Request Service</a></li>
 				<li><a href="heatmap.html">Heat Map</a></li>
+				<li><a href="actionitems.html">Recommended Service Locations</a></li>
 				<li><a href="#">About</a></li>
 				<li><a href="#">Sign in</a></li>
 			</ul>
@@ -62,7 +63,7 @@
 
 				<div class="description">
 					<label class="form_titles" for="description">Description</label>
-					<textarea rows="4" cols="40" maxlength="255" class="form_inputs" id="description" type="text">
+					<textarea rows="4" cols="40" maxlength="255" class="form_inputs" id="description" type="text" required>
 
 					</textarea>
 					
@@ -74,6 +75,14 @@
 
 			</form>
 
+		</div>
+
+		<div id="flexSuccessModal"> 
+			<div id="successModal">
+				<h1>Success</h1>
+				<p>Your Report ID</p>
+				<button id="modalButton" type="button">Exit</button>
+			</div>
 		</div>
 	</div>
 	<script src="https://cdn.auth0.com/js/lock-9.0.min.js"></script>

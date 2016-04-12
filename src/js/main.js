@@ -86,9 +86,11 @@ $(document).ready(function() {
 				type: 'GET',
 				success: function (data) {
 					console.log(data);
-					alert('Success!')
+					$description[0].value = "";
+					alert(`Success! Your Report ID is ${data.id}`)
 				},
-				error: function () {
+				error: function (err) {
+					if (eff.status)
 					console.error("Failed ajax")
 				}
 			})

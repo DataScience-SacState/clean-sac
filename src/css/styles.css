@@ -37,7 +37,7 @@ html, body, #map {
 
 .app__navbar #togglebtn {
 	position: fixed;
-	top: 1em;
+	top: .7em;
 	left: 1em;
 	padding: .5em;
 }
@@ -173,4 +173,28 @@ html, body, #map {
 	margin-bottom: 5px;
 	width: 90%;
 	text-align: left;
+}
+
+#flexSuccessModal {
+	display: none;
+
+}
+
+#flexSuccessModal.open {
+	display: flex;
+
+}
+
+#successModal {
+	width: 60%;
+	height: 15%;
+	display: none
+}
+
+#successModal.open {
+	display: block;
+	flex: 0 1 auto;
+	position: fixed;
+
+
 }

@@ -1,0 +1,21 @@
+#items {
+	text-align: center;
+
+}
+
+.title {
+	display: inline-block;
+	font-size: 12px;
+}
+
+.clusterItem {
+	font-size: 1.2em;
+	margin: .1em;
+	background-color: #396;
+	color: #FFF;
+}
+
+.clusterItem span{
+	font-size: 1.4em;
+	width: 100%;
+}
