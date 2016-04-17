@@ -24,7 +24,7 @@ $(document).ready(function() {
     filterIndex = _.findIndex( state.filters, [ 'name', $filter.text() ] );
 
     //Flip clicked filter
-    console.log($filter + filterIndex)
+    console.log($filter[0].innerHTML + filterIndex)
     state.filters[filterIndex].checked = !state.filters[filterIndex].checked;
     state.filterStatus = true;
 
@@ -85,14 +85,14 @@ function initMap() {
 
 function fetchListandCreateHeatMap(map) {
 
-  // Display heat map is "loading..."
+  // Display heat map is "loading..."i
   if (!state.loaded) {
     $(".title").html('Loading <i class="fa fa-refresh fa-spin"></i>')
   }
 
-  var url = "http://159.203.247.240:3000/reports.json"
+  //var url = "http://159.203.247.240:3000/reports.json"
   console.log(url)
-  //var url = "data.json"
+  var url = "data.json"
 
   console.log("STARTING FETCH")
   fetch(url)
@@ -130,7 +130,7 @@ function processDataToGoogleArray(data) {
     state.filterStatus = false;
 
     var processedData = data.map(function(point) {
-      return new google.maps.LatLng(point.latitude, point.longitude);
+      return new google.maps.LatLng(point.LAT, point.LON);
     });
 
   }else{
@@ -141,7 +141,7 @@ function processDataToGoogleArray(data) {
       return _.includes(toggledFilters, data.type)
     })
     .map(function(point) {
-      return new google.maps.LatLng(point.latitude, point.longitude);
+      return new google.maps.LatLng(point.LAT, point.LON);
     });
 
   }
@@ -161,7 +161,7 @@ function getToggledFilters() {
 function createFilterListItems() {
 
   var filterHTML = state.filters.map(function(filter) {
-    return `<li class="${filter.checked? "filter checked" : "filter"}" id="${_.lowerCase(filter.name)}Filter">${filter.name}</li>`
+    return '<li class="' + (filter.checked? "filter checked" : "filter") + '" id="' + _.lowerCase(filter.name) + 'Filter">' + filter.name + '</li>';
   })
   .join('')
 
@@ -184,7 +184,7 @@ function updateHeatmap() {
     state.filterStatus = false;
 
     reportsJson.map(function(point) {
-      googleMVCArray.push( new google.maps.LatLng(point.latitude, point.longitude) );
+      googleMVCArray.push( new google.maps.LatLng(point.LAT, point.LON) );
     });
 
   }else{
@@ -192,14 +192,15 @@ function updateHeatmap() {
     state.filterStatus = true;
 
     reportsJson.filter(function(data) {
-      return _.includes(toggledFilters, data.type)
+      return _.includes(toggledFilters, data.TYPE)
     })
     .map(function(point) {
-      googleMVCArray.push( new google.maps.LatLng(point.latitude, point.longitude) );
+      googleMVCArray.push( new google.maps.LatLng(point.LAT, point.LON) );
     });
 
   }
   console.log("heatmap updated")
+  console.log(googleMVCArray)
 }
 
 function logCurrentState() {
